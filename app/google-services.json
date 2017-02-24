@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "1092525049960",
+    "firebase_url": "https://friendlychat-bebb3.firebaseio.com",
+    "project_id": "friendlychat-bebb3",
+    "storage_bucket": "friendlychat-bebb3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092525049960:android:b5d75907de594a2d",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelab.friendlychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092525049960-i81594g6mqv9j461hddqu67g5g595lg5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.codelab.friendlychat",
+            "certificate_hash": "896839c9dce9680887473bad1a2b2cca067a16cb"
+          }
+        },
+        {
+          "client_id": "1092525049960-6m35jjjfq3fd759j8a0n9npmn3fm37gq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVi_n5BpmbbmrXoPINInqZ2F1F2vnCjH8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092525049960-6m35jjjfq3fd759j8a0n9npmn3fm37gq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092525049960:android:8208c034919b1667",
+        "android_client_info": {
+          "package_name": "makers.ar_d.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092525049960-8if93p9lm7lj6q1okppq200eupvbbp4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "makers.ar_d.chatapp",
+            "certificate_hash": "896839c9dce9680887473bad1a2b2cca067a16cb"
+          }
+        },
+        {
+          "client_id": "1092525049960-6m35jjjfq3fd759j8a0n9npmn3fm37gq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVi_n5BpmbbmrXoPINInqZ2F1F2vnCjH8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092525049960-6m35jjjfq3fd759j8a0n9npmn3fm37gq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
