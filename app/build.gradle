@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -24,13 +25,17 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    testCompile 'junit:junit:4.12'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.android.gms:play-services-identity:10.2.0'
+    compile 'com.google.android.gms:play-services-plus:10.2.0'
+    compile 'com.google.android.gms:play-services-gcm:10.2.0'
     //Add Library
-    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.android.support:design:25.1.1'
     compile 'com.firebaseui:firebase-ui:0.6.2'
     compile 'com.github.hani-momanii:SuperNova-Emoji:1.0'
+    compile 'com.google.android.gms:play-services:10.2.0'
+    testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

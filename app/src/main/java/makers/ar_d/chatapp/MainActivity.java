@@ -28,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    public static final int REQUEST_MAPS = 11;
     private static int SIGN_IN_REQUEST_CODE = 1;
     private FirebaseListAdapter<ChatMessage> adapter;
     RelativeLayout activity_main;
@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             });
+        }if (item.getItemId() == R.id.menu_share_location) {
+            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            startActivityForResult(intent, REQUEST_MAPS);
+
         }
         return true;
     }
