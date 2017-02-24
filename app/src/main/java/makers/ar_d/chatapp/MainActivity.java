@@ -66,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(activity_main, "Successfully signed in, Selamat datang..", Snackbar.LENGTH_SHORT).show();
                 displayChatMessage();
             }
+        }else if (requestCode == REQUEST_MAPS) {
+            EditText input = (EditText) findViewById(R.id.input);
+            double latitude = data.getDoubleExtra("lat", 0);
+            double longitude = data.getDoubleExtra("long", 0);
+            input.setText(latitude + ", " + longitude);
         } else {
             Snackbar.make(activity_main, "We couldn't sign you. Coba lagi..", Snackbar.LENGTH_SHORT).show();
             finish();
@@ -76,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         activity_main = (RelativeLayout) findViewById(R.id.activity_main);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
