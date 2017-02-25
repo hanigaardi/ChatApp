@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
+            <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
                 android:id="@+id/message_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

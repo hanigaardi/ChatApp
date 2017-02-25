@@ -3,7 +3,6 @@ package makers.ar_d.chatapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private static int SIGN_IN_REQUEST_CODE = 1;
     private FirebaseListAdapter<ChatMessage> adapter;
     RelativeLayout activity_main;
-    FloatingActionButton fab;
+   //add emojicon
+    EmojiconEditText emojiconEditText;
+    ImageView emojiButton, submitButton;
+    EmojIconActions emojIconActions;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 displayChatMessage();
             }
         }else if (requestCode == REQUEST_MAPS) {
-            EditText input = (EditText) findViewById(R.id.input);
+            EditText input = (EditText) findViewById(R.id.emoji_edit_text);
             double latitude = data.getDoubleExtra("lat", 0);
             double longitude = data.getDoubleExtra("long", 0);
             input.setText(latitude + ", " + longitude);
@@ -82,15 +88,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         activity_main = (RelativeLayout) findViewById(R.id.activity_main);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        submitButton = (ImageView) findViewById(R.id.submit_button );
+        emojiButton = (ImageView) findViewById(R.id.emoji_button);
+        emojiconEditText = (EmojiconEditText) findViewById(R.id.emoji_edit_text);
+        emojIconActions = new EmojIconActions(getApplicationContext(),activity_main, emojiButton, emojiconEditText);
+        emojIconActions.ShowEmojicon();
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText input = (EditText) findViewById(R.id.input);
-                FirebaseDatabase.getInstance().getReference().push().setValue(new ChatMessage(input.getText().toString(),
+                FirebaseDatabase.getInstance().getReference().push().setValue(new ChatMessage(emojiconEditText.getText().toString(),
                         FirebaseAuth.getInstance().getCurrentUser().getEmail()));
-                input.setText("");
-                input.requestFocus();
+                emojiconEditText.setText("");
+                emojiconEditText.requestFocus();
             }
         });
 
@@ -115,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 //Get references to the views of list_item.xml
                 TextView messageText, messageUser, messageTime;
                 CircleImageView messageImage;
-                messageText = (TextView) v.findViewById(R.id.message_text);
+                messageText = (EmojiconTextView) v.findViewById(R.id.message_text);
                 messageImage = (CircleImageView) v.findViewById(R.id.messenger_image);
                 messageUser = (TextView) v.findViewById(R.id.message_user);
                 messageTime = (TextView) v.findViewById(R.id.message_time);
