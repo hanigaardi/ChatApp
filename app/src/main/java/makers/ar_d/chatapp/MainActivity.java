@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.github.library.bubbleview.BubbleTextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
-import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,33 +35,41 @@ public class MainActivity extends AppCompatActivity {
     private static int SIGN_IN_REQUEST_CODE = 1;
     private FirebaseListAdapter<ChatMessage> adapter;
     RelativeLayout activity_main;
-   //add emojicon
+    //add emojicon
     EmojiconEditText emojiconEditText;
     ImageView emojiButton, submitButton;
     EmojIconActions emojIconActions;
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_sign_out) {
-            AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Snackbar.make(activity_main, "You have been sign out..", Snackbar.LENGTH_SHORT).show();
-                    finish();
-                }
-            });
-        }if (item.getItemId() == R.id.menu_share_location) {
-            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-            startActivityForResult(intent, REQUEST_MAPS);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        activity_main = (RelativeLayout) findViewById(R.id.activity_main);
+        submitButton = (ImageView) findViewById(R.id.submit_button);
+        emojiButton = (ImageView) findViewById(R.id.emoji_button);
+        emojiconEditText = (EmojiconEditText) findViewById(R.id.emoji_edit_text);
+        emojIconActions = new EmojIconActions(getApplicationContext(), activity_main, emojiButton, emojiconEditText);
+        emojIconActions.ShowEmojicon();
 
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().push().setValue(new ChatMessage(emojiconEditText.getText().toString(),
+                        FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+                emojiconEditText.setText("");
+                emojiconEditText.requestFocus();
+                //clear message when send
+                emojiconEditText.setText("");
+            }
+        });
+        //Check if not sign-in then navigate Signin page
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(), SIGN_IN_REQUEST_CODE);
+        } else {
+            Snackbar.make(activity_main, "Selamat datang " + FirebaseAuth.getInstance().getCurrentUser().getEmail(), Snackbar.LENGTH_SHORT).show();
+            //Load content
+            displayChatMessage();
         }
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
     }
 
     @Override
@@ -72,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(activity_main, "Successfully signed in, Selamat datang..", Snackbar.LENGTH_SHORT).show();
                 displayChatMessage();
             }
-        }else if (requestCode == REQUEST_MAPS) {
+        } else if (requestCode == REQUEST_MAPS) {
             EditText input = (EditText) findViewById(R.id.emoji_edit_text);
             double latitude = data.getDoubleExtra("lat", 0);
             double longitude = data.getDoubleExtra("long", 0);
@@ -83,40 +91,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        activity_main = (RelativeLayout) findViewById(R.id.activity_main);
-        submitButton = (ImageView) findViewById(R.id.submit_button );
-        emojiButton = (ImageView) findViewById(R.id.emoji_button);
-        emojiconEditText = (EmojiconEditText) findViewById(R.id.emoji_edit_text);
-        emojIconActions = new EmojIconActions(getApplicationContext(),activity_main, emojiButton, emojiconEditText);
-        emojIconActions.ShowEmojicon();
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference().push().setValue(new ChatMessage(emojiconEditText.getText().toString(),
-                        FirebaseAuth.getInstance().getCurrentUser().getEmail()));
-                emojiconEditText.setText("");
-                emojiconEditText.requestFocus();
-            }
-        });
-
-        //Check if not sign-in then navigate Signin page
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(), SIGN_IN_REQUEST_CODE);
-        } else {
-            Snackbar.make(activity_main, "Selamat datang " + FirebaseAuth.getInstance().getCurrentUser().getEmail(), Snackbar.LENGTH_SHORT).show();
-            //Load content
-            displayChatMessage();
-        }
-
-    }
-
     private void displayChatMessage() {
-
         ListView listOfMessage = (ListView) findViewById(R.id.list_of_message);
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class, R.layout.list_item, FirebaseDatabase.getInstance().getReference()) {
             @Override
@@ -125,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 //Get references to the views of list_item.xml
                 TextView messageText, messageUser, messageTime;
                 CircleImageView messageImage;
-                messageText = (EmojiconTextView) v.findViewById(R.id.message_text);
+                messageText = (BubbleTextView) v.findViewById(R.id.message_text);
                 messageImage = (CircleImageView) v.findViewById(R.id.messenger_image);
                 messageUser = (TextView) v.findViewById(R.id.message_user);
                 messageTime = (TextView) v.findViewById(R.id.message_time);
@@ -148,5 +123,30 @@ public class MainActivity extends AppCompatActivity {
         };
         listOfMessage.setAdapter(adapter);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_sign_out) {
+            AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Snackbar.make(activity_main, "You have been sign out..", Snackbar.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        }
+        if (item.getItemId() == R.id.menu_share_location) {
+            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            startActivityForResult(intent, REQUEST_MAPS);
+        }
+        return true;
+    }
+
 }
 

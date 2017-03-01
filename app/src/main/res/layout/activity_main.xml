@@ -39,27 +39,26 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="16dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="16dp">
+        android:dividerHeight="16dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll">
 
     </ListView>
-<android.support.design.widget.TextInputLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_toLeftOf="@+id/submit_button"
-    android:layout_toRightOf="@+id/emoji_button"
-    android:layout_alignParentBottom="true">
 
-    <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
-        android:id="@+id/emoji_edit_text"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Message . . ."
-        app:emojiconSize="28dp" />
-</android.support.design.widget.TextInputLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/submit_button"
+        android:layout_toRightOf="@+id/emoji_button">
 
-
-
-
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+            android:id="@+id/emoji_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message . . ."
+            app:emojiconSize="28dp" />
+    </android.support.design.widget.TextInputLayout>
 
 
 </RelativeLayout>
